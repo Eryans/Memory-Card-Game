@@ -1,6 +1,8 @@
 class Card{
     constructor(id){
         this.cardBody = document.createElement("div");
+        this.backColor = "red";
+        this.canFlip = true;
         this.id = id;
         switch(id){
             case 1:
@@ -22,28 +24,63 @@ class Card{
                 this.frontColor = "cyan";
                 break;
         }
-        this.cardBody.style.backgroundColor = this.frontColor;
-        // ^^This is for testing^^
         this.isReturned = false;
         this.cardBody.classList.add("cardClass");
-        this.cardBody.addEventListener("click",x => setTimeout(() => this.flip(x),1000));
+        this.event = this.cardBody.addEventListener("click",x => setTimeout(() => this.flip(x),0));
         document.querySelector("main").appendChild(this.cardBody);
     }
     flip(){
-        this.cardBody.style.backgroundColor = this.frontColor;
-        this.isReturned = !this.isReturned;
+        if (this.canFlip){
+            this.isReturned = true;
+            this.canFlip = false;
+        }
+        this.faceToShow();
+        checkCard();
+    }
+    faceToShow(){
+        (this.isReturned) ? this.cardBody.style.backgroundColor = this.frontColor : 
+        this.cardBody.style.backgroundColor = this.backColor;
     }
 }
 
 // Creating Cards
-let id = []
+let ids = []
 let cards = [];
 for (let i = 0; i < 12; i++){
     randomId();
-    cards.push(new Card(id[i]));
+    cards.push(new Card(ids[i]));
 }
-
+// Fill an array with the randomised id
 function randomId(){
     let number = Math.ceil(Math.random()*6);
-    id.filter(x => x === number).length < 2 ? id.push(number) : randomId();
+    ids.filter(x => x === number).length < 2 ? ids.push(number) : randomId();
+}
+
+
+// Functions
+
+function checkCard(){
+    let returnedCardArray = cards.filter(x => x.isReturned); 
+    if (returnedCardArray.length === 2){
+        cards.forEach(x => x.canFlip = false);
+        if (returnedCardArray[0].id === returnedCardArray[1].id){
+            setTimeout(function(){
+                console.log("pair found");
+                cards.forEach(x => x.canFlip = true);   
+            },2000);
+            //ids = ids.slice();
+        }
+        else {
+            setTimeout(function(){
+                console.log("too bad");
+                returnedCardArray.forEach(x => (
+                    x.isReturned = false,
+                    x.faceToShow(),
+                    x.canFlip = true,
+                    returnedCardArray = [],
+                    cards.forEach(x => x.canFlip = true)
+                ))
+            },2000);
+        }
+    }
 }

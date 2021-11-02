@@ -93,6 +93,8 @@ main{
   background-color: red;
   height: 20vh;
   width: 25vw;
+  border: 1px solid black;
+  border-radius: 4px;
 }
 /* ==========================================================================
    Helper classes
