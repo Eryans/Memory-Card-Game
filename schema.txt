@@ -10,3 +10,5 @@ function flip(){} // Flip the card
 }
 
 We can use Array.some() to check if a card is returned by writing a callback that check it.
+( Actually didn't need it )
+

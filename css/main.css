@@ -90,11 +90,14 @@ main{
   height: 100vh;
 }
 .cardClass{
-  background-color: red;
+  background: red;
+  opacity: 1;
   height: 20vh;
   width: 25vw;
   border: 1px solid black;
   border-radius: 4px;
+  transform: rotate3d(0,1,0,0deg);
+  transition: transform 0.5s linear,background-color 0.5s linear,opacity 1s ease-out;
 }
 /* ==========================================================================
    Helper classes
