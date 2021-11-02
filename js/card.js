@@ -18,7 +18,7 @@ class Card{
             this.isReturned = true;
             this.canFlip = false;
             returnedCards.push(this);
-            boardGame.checkCard(); 
+            this.boardGame.checkCard(); 
             // Call CheckCard when selecting card, if we found a pair card are not clickable anymore so we do not need to check them
         }
         this.faceToShow();
@@ -36,15 +36,15 @@ class BoardGame{
     }
     checkCard(){
         if (returnedCards.length === 2){
-            cards.forEach(x => x.canFlip = false);
+            this.cards.forEach(x => x.canFlip = false);
             if (returnedCards[0].id === returnedCards[1].id){
-                setTimeout(function(){
+                setTimeout(function(x){
                     console.log("pair found");
                     returnedCards.forEach(x => (x.isFound = true,
                                                 x.cardBody.style.opacity =  0.65));
-                    cards.forEach(x => x.isFound ? x.canFlip = false : x.canFlip = true);
-                    cards.splice(cards.indexOf(returnedCards[0]),1);
-                    cards.splice(cards.indexOf(returnedCards[1]),1);
+                    x.cards.forEach(x => x.isFound ? x.canFlip = false : x.canFlip = true);
+                    x.cards.splice(x.cards.indexOf(returnedCards[0]),1);
+                    x.cards.splice(x.cards.indexOf(returnedCards[1]),1);
                     returnedCards = [];
                     checkIfWin();
                 },2000);
@@ -57,7 +57,7 @@ class BoardGame{
                         x.faceToShow(),
                         x.canFlip = true,
                         returnedCards = [],
-                        cards.forEach(x => x.isFound ? x.canFlip = false : x.canFlip = true)
+                        x.cards.forEach(x => x.isFound ? x.canFlip = false : x.canFlip = true)
                     ))
                 },2000);
             }
