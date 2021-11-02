@@ -3,6 +3,7 @@ class Card{
         this.cardBody = document.createElement("div");
         this.backColor = "red";
         this.canFlip = true;
+        this.isFound = false;
         this.id = id;
         switch(id){
             case 1:
@@ -26,16 +27,18 @@ class Card{
         }
         this.isReturned = false;
         this.cardBody.classList.add("cardClass");
-        this.event = this.cardBody.addEventListener("click",x => setTimeout(() => this.flip(x),0));
+        this.event = x => setTimeout(() => this.flip(x),0);
+        this.cardBody.addEventListener("click",this.event);
         document.querySelector("main").appendChild(this.cardBody);
     }
     flip(){
         if (this.canFlip){
             this.isReturned = true;
             this.canFlip = false;
+            checkCard(); 
+            // Call CheckCard when selecting card, if we found a pair card are not clickable anymore so we do not need to check them
         }
         this.faceToShow();
-        checkCard();
     }
     faceToShow(){
         (this.isReturned) ? this.cardBody.style.backgroundColor = this.frontColor : 
@@ -43,32 +46,39 @@ class Card{
     }
 }
 
-// Creating Cards
-let ids = []
-let cards = [];
-for (let i = 0; i < 12; i++){
-    randomId();
-    cards.push(new Card(ids[i]));
-}
-// Fill an array with the randomised id
-function randomId(){
-    let number = Math.ceil(Math.random()*6);
-    ids.filter(x => x === number).length < 2 ? ids.push(number) : randomId();
-}
-
+// Game loop
+const CARDS = [];
+init();
 
 // Functions
+// Creating CARDS and init game
+
+function init(){
+    const ID = []
+    for (let i = 0; i < 12; i++){
+        randomId(ID);
+        CARDS.push(new Card(ID[i]));
+    }
+}
+// Fill an array with the randomised id
+function randomId(array){
+    let number = Math.ceil(Math.random()*6); // Use math.ceil to avoid returning 0
+    array.filter(x => x === number).length < 2 ? array.push(number) : randomId(array);
+}
 
 function checkCard(){
-    let returnedCardArray = cards.filter(x => x.isReturned); 
+    let returnedCardArray = CARDS.filter(x => x.isReturned); 
     if (returnedCardArray.length === 2){
-        cards.forEach(x => x.canFlip = false);
+        CARDS.forEach(x => x.canFlip = false);
         if (returnedCardArray[0].id === returnedCardArray[1].id){
             setTimeout(function(){
                 console.log("pair found");
-                cards.forEach(x => x.canFlip = true);   
+                returnedCardArray.forEach(x => x.isFound = true);
+                CARDS.forEach(x => x.isFound ? x.canFlip = false : x.canFlip = true);
+                CARDS.splice(CARDS.indexOf(returnedCardArray[0]),1);
+                CARDS.splice(CARDS.indexOf(returnedCardArray[1]),1);
+                returnedCardArray = [];
             },2000);
-            //ids = ids.slice();
         }
         else {
             setTimeout(function(){
@@ -78,9 +88,15 @@ function checkCard(){
                     x.faceToShow(),
                     x.canFlip = true,
                     returnedCardArray = [],
-                    cards.forEach(x => x.canFlip = true)
+                    CARDS.forEach(x => x.isFound ? x.canFlip = false : x.canFlip = true)
                 ))
             },2000);
         }
     }
+    checkIfWin();
+    console.log(CARDS.length);
+}
+
+function checkIfWin(){
+    CARDS.length > 2 ? console.log("Game is still going") : console.log("You won !");
 }
