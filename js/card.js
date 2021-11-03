@@ -1,6 +1,7 @@
 class Card{
-    constructor(id,cards){
+    constructor(id,cards,returnedCards){
         this.cardBody = document.createElement("div");
+        this.returnedCards = returnedCards;
         this.cards = cards;
         this.backColor = "red";
         this.canFlip = true;
@@ -18,8 +19,8 @@ class Card{
         if (this.canFlip){
             this.isReturned = true;
             this.canFlip = false;
-            returnedCards.push(this);
-            BoardGame.checkCard(this.cards); 
+            this.returnedCards.push(this);
+            BoardGame.checkCard(this.cards,this.returnedCards); 
             // Call CheckCard when selecting card, if we found a pair card are not clickable anymore so we do not need to check them
         }
         this.faceToShow();
@@ -32,7 +33,7 @@ class Card{
     }
 }
 class BoardGame{
-    static checkCard(cards){
+    static checkCard(cards,returnedCards){
         if (returnedCards.length === 2){
             cards.forEach(x => x.canFlip = false);
             if (returnedCards[0].id === returnedCards[1].id){
@@ -43,7 +44,7 @@ class BoardGame{
                     cards.forEach(x => x.isFound ? x.canFlip = false : x.canFlip = true);
                     cards.splice(cards.indexOf(returnedCards[0]),1);
                     cards.splice(cards.indexOf(returnedCards[1]),1);
-                    returnedCards = [];
+                    returnedCards.length = 0;
                     BoardGame.checkIfWin(cards);
                 },2000);
             }
@@ -54,9 +55,9 @@ class BoardGame{
                         x.isReturned = false,
                         x.faceToShow(),
                         x.canFlip = true,
-                        returnedCards = [],
                         cards.forEach(x => x.isFound ? x.canFlip = false : x.canFlip = true)
-                    ))
+                    ));
+                    returnedCards.length = 0;
                 },2000);
             }
         }
@@ -67,17 +68,17 @@ class BoardGame{
 }
 // Game loop
 const COLORS = ["orange","blue","pink","green","cyan","purple"];
-let returnedCards = [];
 init();
 // Functions
 // Creating CARDS and init game
 function init(){
     const ID = [];
     const CARDS = [];
+    const RETURNEDCARDS = [];
     for (let i = 0; i < 12; i++){
         randomId(ID);
         // Fill an array with the randomised id
-        CARDS.push(new Card(ID[i],CARDS)); 
+        CARDS.push(new Card(ID[i],CARDS,RETURNEDCARDS)); 
     }
 }
 function randomId(array){
