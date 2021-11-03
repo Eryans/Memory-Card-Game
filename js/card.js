@@ -1,7 +1,7 @@
 class Card{
-    constructor(id, boardgame){
+    constructor(id,cards){
         this.cardBody = document.createElement("div");
-        this.boardGame = boardgame;
+        this.cards = cards;
         this.backColor = "red";
         this.canFlip = true;
         this.isFound = false;
@@ -12,13 +12,14 @@ class Card{
         this.event = x => this.flip(x);
         this.cardBody.addEventListener("click",this.event);
         document.querySelector("main").appendChild(this.cardBody);
+        console.log(this);
     }
     flip(){
         if (this.canFlip){
             this.isReturned = true;
             this.canFlip = false;
             returnedCards.push(this);
-            this.boardGame.checkCard(); 
+            BoardGame.checkCard(this.cards); 
             // Call CheckCard when selecting card, if we found a pair card are not clickable anymore so we do not need to check them
         }
         this.faceToShow();
@@ -31,22 +32,19 @@ class Card{
     }
 }
 class BoardGame{
-    constructor(cards){
-        this.cards = cards;
-    }
-    checkCard(){
+    static checkCard(cards){
         if (returnedCards.length === 2){
-            this.cards.forEach(x => x.canFlip = false);
+            cards.forEach(x => x.canFlip = false);
             if (returnedCards[0].id === returnedCards[1].id){
-                setTimeout(function(x){
+                setTimeout(function(){
                     console.log("pair found");
                     returnedCards.forEach(x => (x.isFound = true,
                                                 x.cardBody.style.opacity =  0.65));
-                    x.cards.forEach(x => x.isFound ? x.canFlip = false : x.canFlip = true);
-                    x.cards.splice(x.cards.indexOf(returnedCards[0]),1);
-                    x.cards.splice(x.cards.indexOf(returnedCards[1]),1);
+                    cards.forEach(x => x.isFound ? x.canFlip = false : x.canFlip = true);
+                    cards.splice(cards.indexOf(returnedCards[0]),1);
+                    cards.splice(cards.indexOf(returnedCards[1]),1);
                     returnedCards = [];
-                    checkIfWin();
+                    BoardGame.checkIfWin(cards);
                 },2000);
             }
             else {
@@ -57,14 +55,13 @@ class BoardGame{
                         x.faceToShow(),
                         x.canFlip = true,
                         returnedCards = [],
-                        x.cards.forEach(x => x.isFound ? x.canFlip = false : x.canFlip = true)
+                        cards.forEach(x => x.isFound ? x.canFlip = false : x.canFlip = true)
                     ))
                 },2000);
             }
         }
     }
-    
-    checkIfWin(){
+    static checkIfWin(cards){
         cards.length > 0 ? console.log("Game is still going") : console.log("You won !");
     }
 }
@@ -72,59 +69,18 @@ class BoardGame{
 const COLORS = ["orange","blue","pink","green","cyan","purple"];
 let returnedCards = [];
 init();
-
 // Functions
 // Creating CARDS and init game
-
 function init(){
     const ID = [];
     const CARDS = [];
-    const GAME = new BoardGame(CARDS);
-    console.log(GAME);
     for (let i = 0; i < 12; i++){
         randomId(ID);
         // Fill an array with the randomised id
-        CARDS.push(new Card(ID[i],GAME)); 
+        CARDS.push(new Card(ID[i],CARDS)); 
     }
 }
-
 function randomId(array){
     let number = Math.floor(Math.random()*6);
     array.filter(x => x === number).length < 2 ? array.push(number) : randomId(array);
 }
-/*
-function checkCard(){
-    if (returnedCards.length === 2){
-        CARDS.forEach(x => x.canFlip = false);
-        if (returnedCards[0].id === returnedCards[1].id){
-            setTimeout(function(){
-                console.log("pair found");
-                returnedCards.forEach(x => (x.isFound = true,
-                                            x.cardBody.style.opacity =  0.65));
-                CARDS.forEach(x => x.isFound ? x.canFlip = false : x.canFlip = true);
-                CARDS.splice(CARDS.indexOf(returnedCards[0]),1);
-                CARDS.splice(CARDS.indexOf(returnedCards[1]),1);
-                returnedCards = [];
-                checkIfWin();
-            },2000);
-        }
-        else {
-            setTimeout(function(){
-                console.log("too bad");
-                returnedCards.forEach(x => (
-                    x.isReturned = false,
-                    x.faceToShow(),
-                    x.canFlip = true,
-                    returnedCards = [],
-                    CARDS.forEach(x => x.isFound ? x.canFlip = false : x.canFlip = true)
-                ))
-            },2000);
-        }
-    }
-    console.log(CARDS.length);
-}
-
-function checkIfWin(){
-    CARDS.length > 0 ? console.log("Game is still going") : console.log("You won !");
-}
-*/
