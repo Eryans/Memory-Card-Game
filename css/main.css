@@ -87,42 +87,44 @@ textarea {
    Author's custom styles
    ========================================================================== */
 main{
-  height: 100vh;
+  height: 90vh;
+}
+header{
+  min-height: 5vh;
 }
 img{
   height:100%;
-  width:100%;
 }
+
+/* ----------------3D CARD--------------------- */
 .isFlipped{
   transform:rotateY(180deg);
 }
 .backCard{
   border-radius: inherit;
   position: absolute;
-  width: 100%;
-  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
   transform: rotateY(180deg);
 }
 .frontCard {
   border-radius: inherit;
   position: absolute;
-  width: 100%;
-  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 .cardClass{
   position: relative;
-  height: 80px;
+  height: 20%;
   width: 40px;
   border-radius: 4px;
   transform-style: preserve-3d;
   transition: transform 2s;
-  box-shadow: 1px 1px 5px gray;
 }
+.frontCard,.backCard{
+  width:100%;
+}
+/* --------------------------------------------- */
 .victory{
   animation: 1s ease-out victory;
-}
-.blocker, .uiClass{
-  position: fixed;
 }
 .blocker{
   top:0;
@@ -133,24 +135,40 @@ img{
 }
 .uiClass{
   background:white;
-  top: calc(50% - 25vh);
+  border-radius: 4px;
+  top: 0;
   left: calc(50% - 30vw);
   min-height:50vh;
   width:60vw;
   z-index: 2;
 }
+#playButton{
+  width:30%;
+  align-self: center;
+}
+.blocker, .uiClass{
+  position: fixed;
+}
+#playButton,.cardClass{
+  box-shadow: 1px 1px 5px gray;
+}
+
 @media screen and (min-width:300px) {
+  .uiClass{
+    top: calc(50% - 25vh);
+  }
   .cardClass{
-    height:120px;
+    height:25%;
     width:80px;
   }
 }
 @media screen and (min-width:500px) {
   .cardClass{
-    height:240px;
+    height:30%;
     width:160px;
   }
 }
+
 @keyframes victory{
   0%{
     transform: translateY(0);

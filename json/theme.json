@@ -11,7 +11,7 @@
         ]
     },
     "White" : {    
-        "backCard" : "img/motorhead.jpg",
+        "backCard" : "img/motorheadWhite.jpg",
         "frontCards" : [
             "img/white/Pikes_A_white.png",
             "img/white/Pikes_Jack_white.png",
