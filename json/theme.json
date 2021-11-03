@@ -6,7 +6,7 @@
             "img/black/Pikes_Jack_black.png",
             "img/black/Pikes_King_black.png",
             "img/black/Pikes_Queen_black.png",
-            "img/black/Pikes_10_black.png",
+            "img/black/Tiles_10_black.png",
             "img/black/Clovers_9_black.png"
         ]
     },
@@ -17,7 +17,7 @@
             "img/white/Pikes_Jack_white.png",
             "img/white/Pikes_King_white.png",
             "img/white/Pikes_Queen_white.png",
-            "img/white/Pikes_10_white.png",
+            "img/white/Tiles_10_white.png",
             "img/white/Clovers_9_white.png"
         ]
     }

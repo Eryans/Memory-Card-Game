@@ -42,6 +42,7 @@ class Card{
         return cardBody;
     }
 }
+
 class BoardGame{
     static life = 5;
     static getLife() { return this.life; }
