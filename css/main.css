@@ -121,6 +121,24 @@ img{
 .victory{
   animation: 1s ease-out victory;
 }
+.blocker, .uiClass{
+  position: fixed;
+}
+.blocker{
+  top:0;
+  background:black;
+  height:100vh;
+  width:100vw;
+  opacity:.3;
+}
+.uiClass{
+  background:white;
+  top: calc(50% - 25vh);
+  left: calc(50% - 30vw);
+  min-height:50vh;
+  width:60vw;
+  z-index: 2;
+}
 @media screen and (min-width:300px) {
   .cardClass{
     height:120px;
