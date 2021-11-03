@@ -97,25 +97,29 @@ img{
   transform:rotateY(180deg);
 }
 .backCard{
+  border-radius: inherit;
   position: absolute;
   width: 100%;
   -webkit-backface-visibility: hidden;
   transform: rotateY(180deg);
 }
 .frontCard {
+  border-radius: inherit;
   position: absolute;
   width: 100%;
   -webkit-backface-visibility: hidden;
 }
 .cardClass{
   position: relative;
-  opacity: 1;
   height: 80px;
   width: 40px;
-  border: 1px solid black;
   border-radius: 4px;
   transform-style: preserve-3d;
-  transition: transform 2s, opacity 1s ease-out;
+  transition: transform 2s;
+  box-shadow: 1px 1px 5px gray;
+}
+.victory{
+  animation: 1s ease-out victory;
 }
 @media screen and (min-width:300px) {
   .cardClass{
@@ -127,6 +131,21 @@ img{
   .cardClass{
     height:240px;
     width:160px;
+  }
+}
+@keyframes victory{
+  0%{
+    transform: translateY(0);
+  }
+  50%{
+    transform:translateY(-25px);
+  }
+  75%{
+    transform:translateY(-35px);
+    transform: rotateY(180deg);
+  }
+  100%{
+    transform:translateY(0);
   }
 }
 /* ==========================================================================

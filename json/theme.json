@@ -9,5 +9,16 @@
             "img/black/Pikes_10_black.png",
             "img/black/Pikes_9_black.png"
         ]
+    },
+    "White" : {    
+        "backCard" : "img/motorhead.jpg",
+        "frontCards" : [
+            "img/white/Pikes_A_white.png",
+            "img/white/Pikes_Jack_white.png",
+            "img/white/Pikes_King_white.png",
+            "img/white/Pikes_Queen_white.png",
+            "img/white/Pikes_10_white.png",
+            "img/white/Pikes_9_white.png"
+        ]
     }
 }

@@ -50,7 +50,7 @@ class BoardGame{
                 setTimeout(function(){
                     console.log("pair found");
                     returnedCards.forEach(x => (x.isFound = true,
-                                                x.cardBody.style.opacity =  0.65));
+                                                x.cardBody.classList.add("victory")));
                     cards.forEach(x => x.isFound ? x.canFlip = false : x.canFlip = true);
                     cards.splice(cards.indexOf(returnedCards[0]),1);
                     cards.splice(cards.indexOf(returnedCards[1]),1);
@@ -85,7 +85,7 @@ function init(){
     }).then(function(response){
         const ID = [];
         const CARDS = [];
-        let theme = "Black";
+        let theme = "White";
         const COLORS = response[theme].frontCards;
         const BACKIMG = response[theme].backCard;
         console.log(COLORS);
