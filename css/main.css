@@ -89,15 +89,33 @@ textarea {
 main{
   height: 100vh;
 }
+img{
+  height:100%;
+  width:100%;
+}
+.isFlipped{
+  transform:rotateY(180deg);
+}
+.backCard{
+  position: absolute;
+  width: 100%;
+  -webkit-backface-visibility: hidden;
+  transform: rotateY(180deg);
+}
+.frontCard {
+  position: absolute;
+  width: 100%;
+  -webkit-backface-visibility: hidden;
+}
 .cardClass{
-  background: red;
+  position: relative;
   opacity: 1;
   height: 20vh;
   width: 25vw;
   border: 1px solid black;
   border-radius: 4px;
-  transform: rotate3d(0,1,0,0deg);
-  transition: transform 0.5s linear,background-color 0.5s linear,opacity 1s ease-out;
+  transform-style: preserve-3d;
+  transition: transform 2s, opacity 1s ease-out;
 }
 /* ==========================================================================
    Helper classes

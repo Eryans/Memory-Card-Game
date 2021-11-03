@@ -1,17 +1,16 @@
 class Card{
     constructor(id,cards,returnedCards){
-        this.cardBody = document.createElement("div");
+        this.cardBody = this.createCard(id);
         this.returnedCards = returnedCards;
         this.cards = cards;
-        this.backColor = "red";
         this.canFlip = true;
         this.isFound = false;
         this.id = id;
-        this.frontColor = COLORS[id];
         this.isReturned = false;
         this.cardBody.classList.add("cardClass");
         this.event = x => this.flip(x);
         this.cardBody.addEventListener("click",this.event);
+        this.faceToShow();
         document.querySelector("main").appendChild(this.cardBody);
         console.log(this);
     }
@@ -20,16 +19,27 @@ class Card{
             this.isReturned = true;
             this.canFlip = false;
             this.returnedCards.push(this);
+            this.faceToShow();
             BoardGame.checkCard(this.cards,this.returnedCards); 
             // Call CheckCard when selecting card, if we found a pair card are not clickable anymore so we do not need to check them
         }
-        this.faceToShow();
     }
     faceToShow(){
-        (this.isReturned) ? (this.cardBody.style.backgroundColor = this.frontColor,
-        this.cardBody.style.transform = "rotate3d(0,1,0,180deg)") : 
-        (this.cardBody.style.backgroundColor = this.backColor,
-         this.cardBody.style.transform = "rotate3d(0,1,0,0deg)");
+        this.cardBody.classList.toggle("isFlipped");
+    }
+    createCard(id){
+        let cardBody = document.createElement("div");
+        let front = document.createElement("img");
+        let frontIMG = COLORS[id];
+        let back = document.createElement("img");
+        let backIMG = "./img/motorhead.jpg"
+        front.src = frontIMG;
+        front.classList.add("frontCard");
+        back.src = backIMG;
+        back.classList.add("backCard");
+        cardBody.appendChild(back);
+        cardBody.appendChild(front);
+        return cardBody;
     }
 }
 class BoardGame{
@@ -67,10 +77,9 @@ class BoardGame{
     }
 }
 // Game loop
-const COLORS = ["orange","blue","pink","green","cyan","purple"];
+const COLORS = ["../img/AceOfSpade.jpg","../img/AceOfSpade.jpg","../img/AceOfSpade.jpg","../img/AceOfSpade.jpg","../img/AceOfSpade.jpg","../img/AceOfSpade.jpg"];
 init();
 // Functions
-// Creating CARDS and init game
 function init(){
     const ID = [];
     const CARDS = [];
