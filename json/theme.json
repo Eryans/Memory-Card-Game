@@ -1,0 +1,13 @@
+{
+    "Black" : {    
+        "backCard" : "img/motorhead.jpg",
+        "frontCards" : [
+            "img/black/Pikes_A_black.png",
+            "img/black/Pikes_Jack_black.png",
+            "img/black/Pikes_King_black.png",
+            "img/black/Pikes_Queen_black.png",
+            "img/black/Pikes_10_black.png",
+            "img/black/Pikes_9_black.png"
+        ]
+    }
+}

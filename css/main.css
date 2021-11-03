@@ -110,12 +110,24 @@ img{
 .cardClass{
   position: relative;
   opacity: 1;
-  height: 20vh;
-  width: 25vw;
+  height: 80px;
+  width: 40px;
   border: 1px solid black;
   border-radius: 4px;
   transform-style: preserve-3d;
   transition: transform 2s, opacity 1s ease-out;
+}
+@media screen and (min-width:300px) {
+  .cardClass{
+    height:120px;
+    width:80px;
+  }
+}
+@media screen and (min-width:500px) {
+  .cardClass{
+    height:240px;
+    width:160px;
+  }
 }
 /* ==========================================================================
    Helper classes

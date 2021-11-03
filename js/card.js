@@ -1,6 +1,6 @@
 class Card{
-    constructor(id,cards,returnedCards){
-        this.cardBody = this.createCard(id);
+    constructor(id,cards,colors,backImg,returnedCards){
+        this.cardBody = this.createCard(id,colors,backImg);
         this.returnedCards = returnedCards;
         this.cards = cards;
         this.canFlip = true;
@@ -27,12 +27,12 @@ class Card{
     faceToShow(){
         this.cardBody.classList.toggle("isFlipped");
     }
-    createCard(id){
+    createCard(id,colors,backImg){
         let cardBody = document.createElement("div");
         let front = document.createElement("img");
-        let frontIMG = COLORS[id];
+        let frontIMG = colors[id];
         let back = document.createElement("img");
-        let backIMG = "./img/motorhead.jpg"
+        let backIMG = backImg
         front.src = frontIMG;
         front.classList.add("frontCard");
         back.src = backIMG;
@@ -77,18 +77,26 @@ class BoardGame{
     }
 }
 // Game loop
-const COLORS = ["../img/AceOfSpade.jpg","../img/AceOfSpade.jpg","../img/AceOfSpade.jpg","../img/AceOfSpade.jpg","../img/AceOfSpade.jpg","../img/AceOfSpade.jpg"];
 init();
 // Functions
 function init(){
-    const ID = [];
-    const CARDS = [];
-    const RETURNEDCARDS = [];
-    for (let i = 0; i < 12; i++){
-        randomId(ID);
-        // Fill an array with the randomised id
-        CARDS.push(new Card(ID[i],CARDS,RETURNEDCARDS)); 
-    }
+    fetch("json/theme.json").then(function(response){
+        return response.json()
+    }).then(function(response){
+        const ID = [];
+        const CARDS = [];
+        let theme = "Black";
+        const COLORS = response[theme].frontCards;
+        const BACKIMG = response[theme].backCard;
+        console.log(COLORS);
+        const RETURNEDCARDS = [];
+        for (let i = 0; i < 12; i++){
+            randomId(ID);
+            // Fill an array with the randomised id
+            CARDS.push(new Card(ID[i],CARDS,COLORS,BACKIMG,RETURNEDCARDS)); 
+        }
+    });
+
 }
 function randomId(array){
     let number = Math.floor(Math.random()*6);
