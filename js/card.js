@@ -6,8 +6,6 @@ class Card{
         this.isFound = false;
         this.id = id;
         this.isReturned = false;
-
-        console.log(cards);
     }
     flip(){
         if (this.canFlip){
@@ -43,10 +41,10 @@ class Card{
 }
 
 class BoardGame{
-    static life = 5;
-    static getLife() { return this.life; }
-    static loseLife() { this.life = this.getLife() -1; }
-    static setLife(value) { this.life = value; }
+    
+    static timeLeft;
+    static gameOver = false;
+
     static checkCard(cards){
         let returnedCards = cards.filter(x => x.isReturned);
         if (returnedCards.length === 2){
@@ -73,8 +71,8 @@ class BoardGame{
                         cards.forEach(x => x.isFound ? x.canFlip = false : x.canFlip = true)
                     ));
                     returnedCards.length = 0;
-                    BoardGame.loseLife();
-                    LIFE.innerText = BoardGame.getLife();
+                    player.life--;
+                    player.update();
                     BoardGame.checkGameOver();
                 },2000);
             }
@@ -82,15 +80,49 @@ class BoardGame{
     }
     static checkIfWin(cards){
         if (cards.length === 0){
-            OptionBox.setMessage("You won !")
+            BoardGame.setGameStatus(true);
+            OptionBox.setMessage(`Congratulation ! You win ! \n Your score is ${player.life * BoardGame.getTimeLeft()}`);
             OptionBox.box();
         }
     }
     static checkGameOver(){
-        if (BoardGame.getLife() === 0) {
+        if (player.life === 0) {
             OptionBox.setMessage("Game Over ! Play Again ?");
             OptionBox.box();
         }
+    }
+    static timer(totalTime){
+        let body = document.querySelector("#Timer");
+        let minutes = parseInt(totalTime/60,10);
+        let seconds = parseInt(totalTime%60,10);
+        body.innerText = `${minutes} : ${seconds}`;
+        let time = setInterval(function(){
+            totalTime--;
+            BoardGame.setTimeLeft(totalTime);
+            minutes = parseInt(totalTime/60,10);
+            seconds = parseInt(totalTime%60,10);
+            body.innerText = `${minutes} : ${seconds}`;
+            if (totalTime === 0 ){
+                clearInterval(time);
+                OptionBox.setMessage("Game Over ! Play Again ?");
+                OptionBox.box();
+            }
+            if (BoardGame.getGameStatus()){
+                clearInterval(time);
+            }
+        },1000)
+    }
+    static setTimeLeft(value){
+        this.timeLeft = value;
+    }
+    static getTimeLeft(){
+        return this.timeLeft;
+    }
+    static setGameStatus(bool){
+        this.gameOver = bool;
+    }
+    static getGameStatus(){
+        return this.gameOver;
     }
 }
 class OptionBox{
@@ -139,18 +171,23 @@ class OptionBox{
     }
 }
 class User{
-
+    constructor(life){
+        this.life = life;
+        this.body = document.querySelector("#Attempt");
+    }
+    update(){
+        this.body.innerText = this.life;
+    }
 }
 // Global
-const LIFE = document.querySelector("#Attempt");
+let player = new User(5);
 let theme = "Black";
 // Game loop
 OptionBox.box();
 // Functions
 function init(){
+    player.update();
     document.querySelector("main").innerHTML = ""; // Empty Main HTML to remove previous card if they exist
-    BoardGame.setLife(5);
-    LIFE.innerText = BoardGame.life;
     fetch("json/theme.json").then(function(response){
         return response.json()
     }).then(function(response){
@@ -164,7 +201,10 @@ function init(){
             // Fill an array with the randomised id
             CARDS.push(new Card(ID[i],CARDS,COLORS,BACKIMG)); 
         }
+        console.log(CARDS);
         CARDS.forEach(x => x.addToBoard());
+        BoardGame.setGameStatus(false);
+        BoardGame.timer(180);
     });
 
 }
