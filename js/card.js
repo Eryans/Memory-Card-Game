@@ -6,19 +6,15 @@ class Card{
         this.isFound = false;
         this.id = id;
         this.isReturned = false;
-        this.cardBody.classList.add("cardClass");
-        this.event = x => this.flip(x);
-        this.cardBody.addEventListener("click",this.event);
-        setTimeout(() => (this.faceToShow(),this.canFlip = true),2000)
-        document.querySelector("main").appendChild(this.cardBody);
-        console.log(this);
+
+        console.log(cards);
     }
     flip(){
         if (this.canFlip){
             this.isReturned = true;
             this.canFlip = false;
             this.faceToShow();
-            BoardGame.checkCard(this.cards,this.returnedCards); 
+            BoardGame.checkCard(this.cards); 
             // Call CheckCard when selecting card, if we found a pair card are not clickable anymore so we do not need to check them
         }
     }
@@ -31,13 +27,18 @@ class Card{
         let frontIMG = colors[id];
         let back = document.createElement("img");
         let backIMG = backImg
-        front.src = frontIMG;
+        cardBody.classList.add("cardClass");front.src = frontIMG;
         front.classList.add("frontCard");
         back.src = backIMG;
         back.classList.add("backCard");
         cardBody.appendChild(back);
         cardBody.appendChild(front);
+        cardBody.addEventListener("click",() => this.flip());
         return cardBody;
+    }
+    addToBoard(){
+        document.querySelector("main").appendChild(this.cardBody);
+        setTimeout(() => (this.faceToShow(),this.canFlip = true),2000)
     }
 }
 
@@ -137,6 +138,9 @@ class OptionBox{
         this.message = message;
     }
 }
+class User{
+
+}
 // Global
 const LIFE = document.querySelector("#Attempt");
 let theme = "Black";
@@ -160,6 +164,7 @@ function init(){
             // Fill an array with the randomised id
             CARDS.push(new Card(ID[i],CARDS,COLORS,BACKIMG)); 
         }
+        CARDS.forEach(x => x.addToBoard());
     });
 
 }
