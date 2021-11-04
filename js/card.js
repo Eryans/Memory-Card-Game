@@ -178,9 +178,12 @@ class User{
     update(){
         this.body.innerText = this.life;
     }
+    setLife(value){
+        this.life = value;
+    }
 }
 // Global
-let player = new User(5);
+let player = new User();
 let theme = "Black";
 
 // Game loop
@@ -188,6 +191,7 @@ OptionBox.box();
 
 // Functions
 function init(){
+    player.setLife(5);
     player.update();
     document.querySelector("main").innerHTML = ""; // Empty Main HTML to remove previous card if they exist
     fetch("json/theme.json").then(function(response){
