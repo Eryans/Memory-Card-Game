@@ -182,8 +182,10 @@ class User{
 // Global
 let player = new User(5);
 let theme = "Black";
+
 // Game loop
 OptionBox.box();
+
 // Functions
 function init(){
     player.update();
