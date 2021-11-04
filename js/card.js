@@ -1,7 +1,6 @@
 class Card{
-    constructor(id,cards,colors,backImg,returnedCards){
+    constructor(id,cards,colors,backImg){
         this.cardBody = this.createCard(id,colors,backImg);
-        this.returnedCards = returnedCards;
         this.cards = cards;
         this.canFlip = false;
         this.isFound = false;
@@ -18,7 +17,6 @@ class Card{
         if (this.canFlip){
             this.isReturned = true;
             this.canFlip = false;
-            this.returnedCards.push(this);
             this.faceToShow();
             BoardGame.checkCard(this.cards,this.returnedCards); 
             // Call CheckCard when selecting card, if we found a pair card are not clickable anymore so we do not need to check them
@@ -48,7 +46,8 @@ class BoardGame{
     static getLife() { return this.life; }
     static loseLife() { this.life = this.getLife() -1; }
     static setLife(value) { this.life = value; }
-    static checkCard(cards,returnedCards){
+    static checkCard(cards){
+        let returnedCards = cards.filter(x => x.isReturned);
         if (returnedCards.length === 2){
             cards.forEach(x => x.canFlip = false);
             if (returnedCards[0].id === returnedCards[1].id){
@@ -156,11 +155,10 @@ function init(){
         const COLORS = response[theme].frontCards;
         const BACKIMG = response[theme].backCard;
         console.log(COLORS);
-        const RETURNEDCARDS = [];
         for (let i = 0; i < 12; i++){
             randomId(ID);
             // Fill an array with the randomised id
-            CARDS.push(new Card(ID[i],CARDS,COLORS,BACKIMG,RETURNEDCARDS)); 
+            CARDS.push(new Card(ID[i],CARDS,COLORS,BACKIMG)); 
         }
     });
 
