@@ -80,7 +80,7 @@ class BoardGame{
     }
     static checkIfWin(cards){
         if (cards.length === 0){
-            BoardGame.setGameStatus(true);
+            BoardGame.setGameOver(true);
             OptionBox.setMessage(`Congratulation ! You win ! \n Your score is ${player.life * BoardGame.getTimeLeft()}`);
             OptionBox.box();
         }
@@ -88,6 +88,7 @@ class BoardGame{
     static checkGameOver(){
         if (player.life === 0) {
             OptionBox.setMessage("Game Over ! Play Again ?");
+            BoardGame.setGameOver(true);
             OptionBox.box();
         }
     }
@@ -118,7 +119,7 @@ class BoardGame{
     static getTimeLeft(){
         return this.timeLeft;
     }
-    static setGameStatus(bool){
+    static setGameOver(bool){
         this.gameOver = bool;
     }
     static getGameStatus(){
@@ -128,6 +129,8 @@ class BoardGame{
 class OptionBox{
     static message = "";
     static box(){
+        // Game Var
+        let numOfCard = 12;
         // Blocker
         let body = document.querySelector("body");
         let block = document.createElement("div");
@@ -142,28 +145,40 @@ class OptionBox{
         `<h2>Jules' Memory Game</h2>
         <p>${this.message}</p>
         <form>
-          <label for="theme">
-            Choose a theme
+            <label for="theme">
+                Choose a theme
             <select name="theme" id="theme">
               <option value="Black">Black Card</option>
               <option value="White">White Card</option>
+              <option value="ClassicPixel">Classic Pixel Card</option>
             </select>
-          </label>
+            </label>
+            <label for="cardNumbers">
+                How many cards ?
+                <select name="cardNumbers" id="cardNumbers">
+                    <option value="12">12</option>
+                    <option value="18" id="card18">18</option>
+                    <option value="24" id="card24">24</option>
+                </select>
+            </label>
         </form>
         <button id="playButton" class="btn btn-light">
             Play
         </button>`;
         body.appendChild(ui);
         
-        document.querySelector("#theme").addEventListener("change",function(x){
+        document.querySelector("#theme").addEventListener("change",function(){
             theme =  document.querySelector("#theme").value;
+        });
+        document.querySelector("#cardNumbers").addEventListener("change",function(){
+            numOfCard =  document.querySelector("#cardNumbers").value;
         });
 
         const playButton = document.querySelector("#playButton");
         playButton.addEventListener("click",function(){
             ui.remove();
             block.remove();
-            init();
+            init(numOfCard);
         })
     }
     static setMessage(message){
@@ -174,6 +189,7 @@ class User{
     constructor(life){
         this.life = life;
         this.body = document.querySelector("#Attempt");
+        this.score = 0;
     }
     update(){
         this.body.innerText = this.life;
@@ -190,31 +206,33 @@ let theme = "Black";
 OptionBox.box();
 
 // Functions
-function init(){
+function init(numOfCards){
     player.setLife(5);
     player.update();
     document.querySelector("main").innerHTML = ""; // Empty Main HTML to remove previous card if they exist
     fetch("json/theme.json").then(function(response){
         return response.json()
     }).then(function(response){
+        const numOfCard = numOfCards;
         const ID = [];
         const CARDS = [];
         const COLORS = response[theme].frontCards;
         const BACKIMG = response[theme].backCard;
         console.log(COLORS);
-        for (let i = 0; i < 12; i++){
-            randomId(ID);
+        for (let i = 0; i < numOfCard; i++){
+            randomId(ID,numOfCard);
             // Fill an array with the randomised id
             CARDS.push(new Card(ID[i],CARDS,COLORS,BACKIMG)); 
         }
         console.log(CARDS);
         CARDS.forEach(x => x.addToBoard());
-        BoardGame.setGameStatus(false);
+        BoardGame.setGameOver(false);
         BoardGame.timer(180);
     });
 
 }
-function randomId(array){
-    let number = Math.floor(Math.random()*6);
-    array.filter(x => x === number).length < 2 ? array.push(number) : randomId(array);
+function randomId(array,numOfCard){
+    let number = Math.floor(Math.random()* numOfCard/2 );
+    array.filter(x => x === number).length < 2 ? array.push(number) : randomId(array, numOfCard);
+    console.log(number);
 }

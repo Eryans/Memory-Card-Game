@@ -88,12 +88,19 @@ textarea {
    ========================================================================== */
 main{
   height: 90vh;
+  background: rgb(0,212,20);
+  background: radial-gradient(circle, rgba(0,212,20,1) 0%, rgba(0,172,30,1) 51%, rgba(2,111,0,1) 100%); 
 }
-header{
+footer,header{
   min-height: 5vh;
+  background: rgb(210,169,99);
+  background: radial-gradient(circle, rgba(210,169,99,1) 0%, rgba(172,117,0,1) 51%, rgba(111,38,0,1) 100%);
+  box-shadow: rgba(0,0,0,.5) -2px -2px 12px; 
 }
 img{
   height:100%;
+  border: 2px solid white;
+  box-shadow: inset black 2px 2px 5px,inset black -2px -2px 5px;
 }
 
 /* ----------------3D CARD--------------------- */
@@ -152,7 +159,9 @@ img{
 #playButton,.cardClass{
   box-shadow: 1px 1px 5px gray;
 }
-
+#card18,#card24{
+  display: none;
+}
 @media screen and (min-width:300px) {
   .uiClass{
     top: calc(50% - 25vh);
@@ -166,6 +175,11 @@ img{
   .cardClass{
     height:30%;
     width:160px;
+  }
+}
+@media screen and (min-width:1080px){
+  #card18,#card24{
+    display: block;
   }
 }
 
