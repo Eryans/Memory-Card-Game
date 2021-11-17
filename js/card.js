@@ -162,6 +162,7 @@ class OptionBox{
                 </select>
             </label>
         </form>
+        <p> 1080p resolution min' is required to play with more than 12 cards</p>
         <button id="playButton" class="btn btn-light">
             Play
         </button>`;
